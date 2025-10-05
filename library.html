@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planet Library - EWE</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/png" href="assets/img/ewe.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+    
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-atom"></i>
+            <span>EWE</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="detector.html">Detector</a></li>
+            <li><a href="library.html" class="active">Library</a></li>
+            <li><a href="metrics.html">Metrics</a></li>
+            <li><a href="credits.html">Credits</a></li>
+        </ul>
+    </nav>
+
+    <main class="container library-page">
+        <section class="page-header">
+            <h1 class="page-title">Planet Library</h1>
+            <p class="page-subtitle">Browse through NASA's comprehensive collection of TESS and Kepler exoplanet discoveries</p>
+            <div class="library-stats" id="library-stats">
+            <div class="stat-card">
+                <i class="fas fa-satellite"></i>
+                <span class="stat-number" id="tess-count" data-default="7,703">7,703</span>
+                <span class="stat-label">TESS Objects</span>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-satellite-dish"></i>
+                <span class="stat-number" id="kepler-count" data-default="9,564">9,564</span>
+                <span class="stat-label">Kepler Objects</span>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-check-circle"></i>
+                <span class="stat-number" id="confirmed-count" data-default="7,425">7,425</span>
+                <span class="stat-label">Confirmed Planets</span>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-home"></i>
+                <span class="stat-number" id="habitable-count" data-default="1,552">1,552</span>
+                <span class="stat-label">Habitable Zone</span>
+            </div>
+            </div>
+        </section>
+
+        <section class="library-controls">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="planet-search" placeholder="Search planets by name, mission, or characteristics...">
+            </div>
+            <div class="filter-controls">
+                <select id="filter-mission">
+                    <option value="all">All Missions</option>
+                    <option value="TESS">TESS Only</option>
+                    <option value="Kepler">Kepler Only</option>
+                </select>
+                <select id="filter-status">
+                    <option value="all">All Results</option>
+                    <option value="confirmed">Confirmed Planets</option>
+                    <option value="candidate">Candidates</option>
+                </select>
+                <select id="filter-type">
+                    <option value="all">All Types</option>
+                    <option value="Sub-Earth">Sub-Earth</option>
+                    <option value="Super-Earth">Super-Earth</option>
+                    <option value="Mini-Neptune">Mini-Neptune</option>
+                    <option value="Neptune-like">Neptune-like</option>
+                    <option value="Jupiter-like">Jupiter-like</option>
+                </select>
+                <select id="sort-by">
+                    <option value="name">Name A-Z</option>
+                    <option value="mission">Mission</option>
+                    <option value="period">Orbital Period</option>
+                    <option value="radius">Planet Radius</option>
+                    <option value="temp">Temperature</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Loading State -->
+        <section class="loading-section" id="loading-section">
+            <div class="loading-spinner">
+                <i class="fas fa-satellite fa-spin"></i>
+            </div>
+            <h3>Loading Real NASA Exoplanet Catalog...</h3>
+            <p>Processing TESS and Kepler data from NASA Exoplanet Archive</p>
+        </section>
+        
+        <!-- Dynamic Planet Grid -->
+        <section class="planet-grid" id="planet-grid" style="display: none;">
+            <!-- Dynamic content will be inserted here -->
+        </section>
+
+        <!-- Enhanced Pagination -->
+        <section class="pagination-section" id="pagination-section" style="display: none;">
+            <div class="pagination" id="pagination-controls">
+                <button class="page-btn" id="prev-page" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                    Previous
+                </button>
+                <div class="page-numbers" id="page-numbers">
+                    <!-- Page numbers will be dynamically generated -->
+                </div>
+                <button class="page-btn" id="next-page">
+                    Next
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="results-info" id="results-info">
+                <span>Loading real NASA catalog...</span>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 EWE - Exoplanetary Worlds Explorer | Developer: Ariana Cordero Tramontana | NASA Space Apps Challenge 2025</p>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        // REAL NASA EXOPLANET CATALOG SYSTEM - Updated to use actual TOI/KOI data
+        
+        let planetCatalog = [];
+        let filteredPlanets = [];
+        let currentPage = 1;
+        const itemsPerPage = 24;
+        
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 Loading Real NASA Exoplanet Catalog from TOI and KOI data...');
+            await initializeLibrary();
+        });
+        
+        async function initializeLibrary() {
+            try {
+                // Load the real NASA catalog data processed from TOI and KOI CSV files
+                const response = await fetch('real_nasa_planet_catalog.json');
+                
+                if (!response.ok) {
+                    throw new Error('Real NASA catalog file not found');
+                }
+                
+                const catalogData = await response.json();
+                
+                planetCatalog = catalogData.planets;
+                filteredPlanets = [...planetCatalog];
+                
+                // Update statistics with real NASA data
+                updateStatistics(catalogData.statistics);
+                
+                // Set up event listeners
+                setupEventListeners();
+                
+                // Display initial data
+                displayPlanets();
+                
+                // Hide loading, show content
+                document.getElementById('loading-section').style.display = 'none';
+                document.getElementById('planet-grid').style.display = 'grid';
+                document.getElementById('pagination-section').style.display = 'block';
+                
+                console.log(`✅ Loaded ${planetCatalog.length} REAL NASA planets from TOI and KOI data`);
+                console.log(`📊 TESS: ${catalogData.statistics.tess_total}, Kepler: ${catalogData.statistics.kepler_total}`);
+                
+            } catch (error) {
+                console.error('❌ Failed to load real NASA catalog:', error);
+                console.error('This should not happen - real NASA data should be available');
+                
+                // Show error message to user
+                document.getElementById('loading-section').innerHTML = `
+                    <div class="loading-spinner">
+                        <i class="fas fa-exclamation-triangle" style="color: #ff6b6b;"></i>
+                    </div>
+                    <h3>Error Loading Real NASA Data</h3>
+                    <p>Unable to load the real TOI and KOI catalog. Please check the data files.</p>
+                `;
+            }
+        }
+        
+        function updateStatistics(stats) {
+            // Update with real NASA statistics
+            document.getElementById('tess-count').textContent = (stats?.tess_total ?? 0).toLocaleString();
+            document.getElementById('kepler-count').textContent = (stats?.kepler_total ?? 0).toLocaleString();
+            document.getElementById('confirmed-count').textContent = (stats?.total_confirmed ?? 0).toLocaleString();
+            document.getElementById('habitable-count').textContent = (stats?.habitable_zone ?? 0).toLocaleString();
+            
+            console.log('📊 Real NASA Statistics Updated:', stats);
+        }
+        
+        function setupEventListeners() {
+            // Search input
+            document.getElementById('planet-search').addEventListener('input', debounce(handleSearch, 300));
+            
+            // Filter dropdowns
+            document.getElementById('filter-mission').addEventListener('change', applyFilters);
+            document.getElementById('filter-status').addEventListener('change', applyFilters);
+            document.getElementById('filter-type').addEventListener('change', applyFilters);
+            document.getElementById('sort-by').addEventListener('change', applyFilters);
+            
+            // Pagination
+            document.getElementById('prev-page').addEventListener('click', () => changePage(currentPage - 1));
+            document.getElementById('next-page').addEventListener('click', () => changePage(currentPage + 1));
+        }
+        
+        function handleSearch(event) {
+            applyFilters();
+        }
+        
+        function applyFilters() {
+            const searchTerm = document.getElementById('planet-search').value.toLowerCase();
+            const missionFilter = document.getElementById('filter-mission').value;
+            const statusFilter = document.getElementById('filter-status').value;
+            const typeFilter = document.getElementById('filter-type').value;
+            const sortBy = document.getElementById('sort-by').value;
+            
+            // Apply filters
+            filteredPlanets = planetCatalog.filter(planet => {
+                // Search filter - enhanced to search real planet names and TOI/KOI designations
+                const matchesSearch = !searchTerm || 
+                    planet.name.toLowerCase().includes(searchTerm) ||
+                    planet.mission.toLowerCase().includes(searchTerm) ||
+                    planet.planet_type.toLowerCase().includes(searchTerm) ||
+                    planet.disposition.toLowerCase().includes(searchTerm) ||
+                    planet.id.toLowerCase().includes(searchTerm) ||
+                    (planet.id.includes('TOI') && searchTerm.includes('toi')) ||
+                    (planet.id.includes('K') && searchTerm.includes('koi')) ||
+                    (planet.name.includes('Kepler') && searchTerm.includes('kepler'));
+                
+                // Mission filter
+                const matchesMission = missionFilter === 'all' || planet.mission === missionFilter;
+                
+                // Status filter - updated for real NASA dispositions
+                const matchesStatus = statusFilter === 'all' || 
+                    (statusFilter === 'confirmed' && ['CONFIRMED', 'PC'].includes(planet.disposition)) ||
+                    (statusFilter === 'candidate' && ['CANDIDATE', 'FALSE POSITIVE', 'FP'].includes(planet.disposition));
+                
+                // Type filter
+                const matchesType = typeFilter === 'all' || planet.planet_type === typeFilter;
+                
+                return matchesSearch && matchesMission && matchesStatus && matchesType;
+            });
+            
+            // Sort results
+            filteredPlanets.sort((a, b) => {
+                switch (sortBy) {
+                    case 'name':
+                        return a.name.localeCompare(b.name);
+                    case 'mission':
+                        return a.mission.localeCompare(b.mission);
+                    case 'period':
+                        return (a.orbital_period || 999999) - (b.orbital_period || 999999);
+                    case 'radius':
+                        return (a.planet_radius || 999999) - (b.planet_radius || 999999);
+                    case 'temp':
+                        return (a.equilibrium_temp || 999999) - (b.equilibrium_temp || 999999);
+                    default:
+                        return 0;
+                }
+            });
+            
+            currentPage = 1;
+            displayPlanets();
+        }
+        
+        function displayPlanets() {
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const planetsToShow = filteredPlanets.slice(startIndex, endIndex);
+            
+            const grid = document.getElementById('planet-grid');
+            grid.innerHTML = '';
+            
+            planetsToShow.forEach(planet => {
+                const card = createPlanetCard(planet);
+                grid.appendChild(card);
+            });
+            
+            updatePagination();
+        }
+        
+        function createPlanetCard(planet) {
+            const card = document.createElement('div');
+            card.className = `planet-card ${getCardClass(planet)}`;
+            card.dataset.planetId = planet.id;
+            
+            const statusText = getStatusText(planet);
+            const color = planet.color_analysis?.hex_color || '#8b45ff';
+            const planetTypeClass = getPlanetTypeClass(planet.planet_type);
+            
+            // Use the real planet name directly from NASA catalog
+            const displayName = planet.name; // This will show real TOI 1000.01, Kepler-227 b, etc.
+            
+            card.innerHTML = `
+                <div class="planet-header">
+                    <h4 class="planet-name" title="${displayName}">${displayName}</h4>
+                    <span class="detection-status ${getCardClass(planet)}">${planet.mission} ${statusText}</span>
+                </div>
+                <div class="planet-preview">
+                    <div class="mini-planet ${planetTypeClass}" style="border-color: ${color}; background: radial-gradient(circle at 30% 30%, ${color}88, ${color});">
+                        <div class="planet-glow" style="box-shadow: 0 0 20px ${color}40;"></div>
+                    </div>
+                    <div class="planet-info">
+                        <p class="planet-type">${planet.planet_type}</p>
+                        <p class="planet-id">ID: ${planet.id}</p>
+                        <p class="period">Period: ${planet.orbital_period ? planet.orbital_period.toFixed(2) + ' days' : 'Unknown'}</p>
+                        <p class="radius">Radius: ${planet.planet_radius ? planet.planet_radius.toFixed(2) + ' R⊕' : 'Unknown'}</p>
+                        <p class="temperature">Temp: ${planet.equilibrium_temp ? Math.round(planet.equilibrium_temp) + ' K' : 'Unknown'}</p>
+                    </div>
+                </div>
+                <div class="planet-meta">
+                    <span class="discovery-info">${planet.discovery_year}</span>
+                </div>
+                <div class="color-visualization" style="background: linear-gradient(45deg, ${color}, ${adjustBrightness(color, 20)});">
+                    <span class="color-label">${planet.color_analysis?.description || 'Real NASA data'}</span>
+                </div>
+            `;
+            
+            // Add double-click handler to redirect to display.html
+            card.addEventListener('dblclick', () => handlePlanetDoubleClick(planet));
+            
+            // Add hover effects
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-5px)';
+                card.style.boxShadow = `0 15px 35px ${color}40`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+                card.style.boxShadow = '0 8px 25px rgba(139, 69, 255, 0.15)';
+            });
+            
+            return card;
+        }
+        
+        function getCardClass(planet) {
+            if (['CONFIRMED', 'PC'].includes(planet.disposition)) {
+                return 'detected';
+            }
+            return 'candidate';
+        }
+        
+        function getStatusText(planet) {
+            if (planet.disposition === 'CONFIRMED') return 'Confirmed';
+            if (planet.disposition === 'PC') return 'Confirmed';
+            if (planet.disposition === 'CANDIDATE') return 'Candidate';
+            if (planet.disposition === 'FP') return 'False Positive';
+            return 'Candidate';
+        }
+        
+        function getPlanetTypeClass(type) {
+            const typeMap = {
+                'Sub-Earth': 'terrestrial',
+                'Super-Earth': 'super-earth',
+                'Mini-Neptune': 'neptune',
+                'Neptune-like': 'neptune',
+                'Jupiter-like': 'jupiter'
+            };
+            return typeMap[type] || 'unknown';
+        }
+        
+        function adjustBrightness(hex, percent) {
+            if (!hex) return '#8b45ff';
+            const num = parseInt(hex.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = Math.min(255, Math.max(0, (num >> 16) + amt));
+            const G = Math.min(255, Math.max(0, (num >> 8 & 0x00FF) + amt));
+            const B = Math.min(255, Math.max(0, (num & 0x0000FF) + amt));
+            return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
+        }
+        
+        function handlePlanetDoubleClick(planet) {
+            // Store selected planet data in localStorage for display.html
+            localStorage.setItem('selectedPlanet', JSON.stringify(planet));
+            window.location.href = 'display.html';
+        }
+        
+        function updatePagination() {
+            const totalItems = filteredPlanets.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const startItem = (currentPage - 1) * itemsPerPage + 1;
+            const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+            
+            // Update results info
+            document.getElementById('results-info').innerHTML = `
+                <span>Showing ${startItem}-${endItem} of ${totalItems.toLocaleString()} real NASA planets</span>
+            `;
+            
+            // Update previous button
+            document.getElementById('prev-page').disabled = currentPage === 1;
+            
+            // Update next button
+            document.getElementById('next-page').disabled = currentPage === totalPages;
+            
+            // Update page numbers
+            updatePageNumbers(totalPages);
+        }
+        
+        function updatePageNumbers(totalPages) {
+            const pageNumbers = document.getElementById('page-numbers');
+            pageNumbers.innerHTML = '';
+            
+            if (totalPages <= 1) return;
+            
+            const showPages = 5;
+            const halfShow = Math.floor(showPages / 2);
+            let startPage = Math.max(1, currentPage - halfShow);
+            let endPage = Math.min(totalPages, startPage + showPages - 1);
+            
+            if (endPage - startPage + 1 < showPages) {
+                startPage = Math.max(1, endPage - showPages + 1);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `page-number ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => changePage(i));
+                pageNumbers.appendChild(pageBtn);
+            }
+        }
+        
+        function changePage(newPage) {
+            const totalPages = Math.ceil(filteredPlanets.length / itemsPerPage);
+            if (newPage >= 1 && newPage <= totalPages) {
+                currentPage = newPage;
+                displayPlanets();
+            }
+        }
+        
+        // Utility function for debouncing search
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+    </script>
+</body>
+</html>

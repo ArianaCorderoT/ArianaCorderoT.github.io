@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EWE - Optimized</title>
+    <link rel="icon" type="image/png" href="assets/img/ewe.png">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+    
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-atom"></i>
+            <span>EWE</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="detector.html" class="active">Detector</a></li>
+            <li><a href="library.html">Library</a></li>
+            <li><a href="metrics.html">Metrics</a></li>
+            <li><a href="credits.html">Credits</a></li>
+        </ul>
+    </nav>
+
+    <main class="container detector-page">
+        <section class="page-header">
+            <h1 class="page-title">AI Exoplanet Detector</h1>
+            <p class="page-subtitle">High-performance algorithms with non-blocking processing and real-time progress updates</p>
+            <div class="model-info-badge">
+            </div>
+        </section>
+
+        <div class="detector-container">
+            <!-- File Upload Section -->
+            <section class="upload-section">
+                <h2 class="section-title">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    Upload Data Files
+                </h2>
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-content">
+                        <i class="fas fa-file-upload upload-icon"></i>
+                        <h3>Drag & Drop your files here</h3>
+                        <p>or <span class="browse-link">browse</span> to choose files</p>
+                        <input type="file" id="file-input" multiple accept=".csv,.fits,.fit,.txt,.dat" hidden>
+                    </div>
+                    <div class="supported-formats">
+                        <h4>Optimized Format Support:</h4>
+                        <div class="format-tags">
+                            <span class="format-tag enhanced">TESS FITS</span>
+                            <span class="format-tag enhanced">Kepler FITS</span>
+                            <span class="format-tag">CSV</span>
+                            <span class="format-tag">TXT</span>
+                            <span class="format-tag">DAT</span>
+                        </div>
+                        <p class="format-requirements">
+                            <strong>Auto-Detection:</strong> TIME, FLUX columns<br>
+                            <strong>Mission Support:</strong> TESS, Kepler, K2, CoRoT<br>
+                            <strong>Validation:</strong> Real-time file structure check<br>
+                        </p>
+                    </div>
+                </div>
+                <div class="uploaded-files" id="uploaded-files"></div>
+            </section>
+
+            <!-- Data Format Information -->
+            <section class="data-info-section">
+                <h2 class="section-title">
+                    <i class="fas fa-info-circle"></i>
+                    Optimized Data Processing
+                </h2>
+                <div class="data-formats">
+                    <div class="format-card">
+                        <div class="format-icon"><i class="fas fa-brain"></i></div>
+                        <h3>Optimized Detection</h3>
+                        <p>Non-blocking BLS + Progressive Analysis</p>
+                        <ul>
+                            <li>Chunked data processing</li>
+                            <li>Real-time progress updates</li>
+                            <li>UI responsiveness maintained</li>
+                            <li>Accuracy preservation</li>
+                        </ul>
+                    </div>
+                    <div class="format-card">
+                        <div class="format-icon"><i class="fas fa-satellite"></i></div>
+                        <h3>Mission Data</h3>
+                        <p>Fast native support for space telescope data</p>
+                        <ul>
+                            <li>TESS 2-min & 30-min cadence</li>
+                            <li>Kepler long & short cadence</li>
+                            <li>K2 & CoRoT compatibility</li>
+                        </ul>
+                    </div>
+                    <div class="format-card">
+                        <div class="format-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3>Performance Analysis</h3>
+                        <p>Preprocessing with progress tracking</p>
+                        <ul>
+                            <li>Asynchronous outlier detection</li>
+                            <li>Progressive trend correction</li>
+                            <li>Optimized period search</li>
+                            <li>Live confidence scoring</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stellar Parameters Section -->
+            <section class="stellar-parameters-section">
+                <h2 class="section-title">
+                    <i class="fas fa-star"></i>
+                    Stellar Parameters (Optional)
+                    <span class="optional-badge">Boosts Analysis Accuracy</span>
+                </h2>
+                <form id="stellar-params-form" class="stellar-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="stellar-mass">
+                                <i class="fas fa-weight"></i>
+                                Stellar Mass (M☉)
+                            </label>
+                            <input type="number" id="stellar-mass" name="mass_sun" step="0.01" placeholder="1.0" min="0.1" max="10">
+                            <small>Solar masses (enhances planet radius estimation)</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="stellar-radius">
+                                <i class="fas fa-expand-arrows-alt"></i>
+                                Stellar Radius (R☉)
+                            </label>
+                            <input type="number" id="stellar-radius" name="radius_sun" step="0.01" placeholder="1.0" min="0.1" max="10">
+                            <small>Solar radii (critical for planet size calculation)</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="stellar-temp">
+                                <i class="fas fa-thermometer-half"></i>
+                                Effective Temperature (K)
+                            </label>
+                            <input type="number" id="stellar-temp" name="teff" step="10" placeholder="5778" min="2000" max="50000">
+                            <small>Kelvin (affects equilibrium temperature calculation)</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="metallicity">
+                                <i class="fas fa-atom"></i>
+                                Metallicity [Fe/H]
+                            </label>
+                            <input type="number" id="metallicity" name="feh" step="0.01" placeholder="0.0" min="-3" max="1">
+                            <small>dex (stellar composition indicator)</small>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="surface-gravity">
+                                <i class="fas fa-arrow-down"></i>
+                                Surface Gravity log(g)
+                            </label>
+                            <input type="number" id="surface-gravity" name="logg" step="0.01" placeholder="4.44" min="0" max="6">
+                            <small>log(cm/s²) (stellar evolution indicator)</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="magnitude">
+                                <i class="fas fa-eye"></i>
+                                TESS Magnitude
+                            </label>
+                            <input type="number" id="magnitude" name="mag_tess" step="0.1" placeholder="10.5" min="1" max="20">
+                            <small>Apparent magnitude in TESS band</small>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Process Button -->
+            <section class="process-section" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 40px 0; width: 100%;">
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+                    <button id="process-btn" class="process-button enhanced" type="button" style="margin-bottom: 24px; display: block; margin-left: auto; margin-right: auto;">
+                        <span>⚡ Analyze</span>
+                        <div class="button-glow enhanced"></div>
+                    </button>
+                    <div class="process-info" style="width: 100%; max-width: 600px;">
+                        <div class="processing-steps" style="text-align: center;">
+                            <span class="step">Upload</span>
+                            <i class="fas fa-arrow-right"></i>
+                            <span class="step">Validation</span>
+                            <i class="fas fa-arrow-right"></i>
+                            <span class="step">Preprocessing</span>
+                            <i class="fas fa-arrow-right"></i>
+                            <span class="step">BLS Search</span>
+                            <i class="fas fa-arrow-right"></i>
+                            <span class="step">AI</span>
+                            <i class="fas fa-arrow-right"></i>
+                            <span class="step">Results</span>
+                        </div>
+                        <div class="confidence-info" style="text-align: center;">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Display Section (Initially Hidden) -->
+            <section class="results-section" id="results-section" style="display: none;">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    Analysis Results
+                </h2>
+                <div class="results-container" id="results-container">
+                    <!-- Results will be populated here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 EWE - Exoplanetary Worlds Explorer | Developer: Ariana Cordero Tramontana | NASA Space Apps Challenge 2025</p>
+    </footer>
+
+    <!-- Optimized Scripts: Load external dependencies first -->
+    <script src="https://cdn.jsdelivr.net/npm/fitsjs@0.7.1/dist/fits.min.js"></script>
+    
+    <!-- Include optimized parsers -->
+    <script src="assets/js/improved_fits_parser.js"></script>
+    
+    <!-- Include optimized detection algorithm -->
+    <script src="assets/js/improved_exoplanet_detector.js"></script>
+    
+    <!-- Include optimized main script -->
+    <script src="assets/js/main.js"></script>
+
+    <style>
+        /* Additional optimized styles */
+        .badge.performance {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            animation: pulse 2s infinite;
+        }
+        
+        .process-button.processing {
+            animation: processingPulse 1.5s infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes processingPulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            }
+            50% { 
+                transform: scale(1.02);
+                box-shadow: 0 0 30px rgba(0, 255, 136, 0.8);
+            }
+        }
+        
+        .drag-over {
+            border-color: #00ff88 !important;
+            background: rgba(0, 255, 136, 0.1) !important;
+            transform: scale(1.02);
+        }
+        
+        .uploaded-file {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+        
+        .uploaded-file:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .file-info i {
+            color: #00ff88;
+            font-size: 1.2em;
+            margin-right: 15px;
+        }
+        
+        .file-details {
+            flex: 1;
+        }
+        
+        .file-name {
+            display: block;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+        
+        .file-meta {
+            display: block;
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .remove-file, .clear-all {
+            background: #dc3545;
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.3s ease;
+        }
+        
+        .remove-file:hover, .clear-all:hover {
+            background: #c82333;
+        }
+        
+        .files-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .files-header h3 {
+            color: #00ff88;
+            margin: 0;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</body>
+</html>
+
+
+
+

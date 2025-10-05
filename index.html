@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="icon" type="image/png" href="ewe.png">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EWE - Exoplanetary Worlds Explorer</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+    
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-atom"></i>
+            <span>EWE</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="detector.html">Detector</a></li>
+            <li><a href="library.html">Library</a></li>
+            <li><a href="metrics.html">Metrics</a></li>
+            <li><a href="credits.html">Credits</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="main-title">
+                    <span class="glitch" data-text="EWE">EWE</span>
+                </h1>
+                <p class="subtitle">Exoplanetary Worlds Explorer</p>
+                <div class="model-badge">
+                </div>
+                <div class="hero-animation">
+                    <div class="planet-orbit">
+                        <div class="planet"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <h2 class="section-title" style="font-size: 2.2rem; text-align: center; margin-bottom: 1.5rem;">About EWE</h2>
+            <div class="about-content" style="display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap;">
+                <div class="about-image" style="flex: 0 0 auto;">
+                    <img src="ewe.png" alt="EWE Logo" style="height: 280px; width: auto; max-height: 280px; max-width: 280px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.12);" onerror="this.onerror=null;this.src='https://via.placeholder.com/280x280?text=Image+Not+Found';">
+                </div>
+                <div class="about-text" style="flex: 1 1 320px; font-size: 1.15rem; line-height: 1.7; background: rgba(20,30,40,0.08); padding: 24px 28px; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.07);">
+                    <p>
+                        <strong>EWE (Exoplanetary Worlds Explorer)</strong> is a tool that combines AI and astronomy to make the search for new worlds easier and clearer. Designed for the NASA Space Apps Challenge 2025, EWE processes raw space data cleaning, filling gaps, and ensuring quality, so it's ready for analysis. It extracts key details like transit depth and duration, orbital period, and signal strength. Using a NASA-trained model, EWE provides reliable estimates of whether a planet is present. With EWE, exoplanet discovery becomes accessible not only to scientists, but also to students and space enthusiasts everywhere.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="navigation-section">
+            <h2 class="section-title">Explore Our Platform</h2>
+            <div class="nav-buttons">
+                <a href="detector.html" class="nav-button primary">
+                    <div class="button-icon">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <h3>Upload Data Files</h3>
+                    <p>Upload CSV, FITS, or TXT files from TESS, Kepler, or other observatories</p>
+                </a>
+                
+                <a href="library.html" class="nav-button secondary">
+                    <div class="button-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Planet Library</h3>
+                    <p>Browse through our collection of detected exoplanets and discoveries</p>
+                </a>
+                
+                <a href="metrics.html" class="nav-button tertiary">
+                    <div class="button-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>AI Metrics</h3>
+                    <p>View NASA-trained model performance, accuracy, and validation statistics</p>
+                </a>
+                
+                <a href="credits.html" class="nav-button quaternary">
+                    <div class="button-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3>Credits</h3>
+                    <p>Learn about the NASA data, technologies and research behind our platform</p>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 EWE - Exoplanetary Worlds Explorer | Developer: Ariana Cordero Tramontana | NASA Space Apps Challenge 2025</p>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
